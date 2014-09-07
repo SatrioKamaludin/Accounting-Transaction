@@ -1,0 +1,124 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.6
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: 07 Sep 2014 pada 11.51
+-- Versi Server: 5.6.16
+-- PHP Version: 5.5.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `accounting`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `accounting_transaction`
+--
+
+CREATE TABLE IF NOT EXISTS `accounting_transaction` (
+  `transaction_id` varchar(10) NOT NULL,
+  `transaction_date` date NOT NULL,
+  `entry_date` date NOT NULL,
+  `description` varchar(50) NOT NULL,
+  `transaction_type_id` varchar(10) NOT NULL,
+  PRIMARY KEY (`transaction_id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `transaction_type_id` (`transaction_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `accounting_transaction_type`
+--
+
+CREATE TABLE IF NOT EXISTS `accounting_transaction_type` (
+  `transaction_type_id` varchar(10) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`transaction_type_id`),
+  KEY `description` (`description`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `general_ledger_account`
+--
+
+CREATE TABLE IF NOT EXISTS `general_ledger_account` (
+  `gl_account_id` varchar(10) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`gl_account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `organization_gl_account_balance`
+--
+
+CREATE TABLE IF NOT EXISTS `organization_gl_account_balance` (
+  `org_gl_id` varchar(10) NOT NULL,
+  `amount` int(100) NOT NULL,
+  `gl_account_id` varchar(10) NOT NULL,
+  PRIMARY KEY (`org_gl_id`),
+  KEY `gl_account_id` (`gl_account_id`),
+  KEY `gl_account_id_2` (`gl_account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `transaction_detail`
+--
+
+CREATE TABLE IF NOT EXISTS `transaction_detail` (
+  `transaction_detail_seq_id` varchar(10) NOT NULL,
+  `amount` int(100) NOT NULL,
+  `debit_credit_flag` char(1) NOT NULL,
+  `transaction_id` varchar(10) NOT NULL,
+  `org_gl_id` varchar(10) NOT NULL,
+  PRIMARY KEY (`transaction_detail_seq_id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `transaction_id_2` (`transaction_id`),
+  KEY `transaction_id_3` (`transaction_id`),
+  KEY `ogr_gl_id` (`org_gl_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `accounting_transaction`
+--
+ALTER TABLE `accounting_transaction`
+  ADD CONSTRAINT `fk_trans_transtype` FOREIGN KEY (`transaction_type_id`) REFERENCES `accounting_transaction_type` (`transaction_type_id`);
+
+--
+-- Ketidakleluasaan untuk tabel `organization_gl_account_balance`
+--
+ALTER TABLE `organization_gl_account_balance`
+  ADD CONSTRAINT `fk_orgGL_generalLedger` FOREIGN KEY (`gl_account_id`) REFERENCES `general_ledger_account` (`gl_account_id`);
+
+--
+-- Ketidakleluasaan untuk tabel `transaction_detail`
+--
+ALTER TABLE `transaction_detail`
+  ADD CONSTRAINT `fk_trans_detail_orgGL` FOREIGN KEY (`org_gl_id`) REFERENCES `organization_gl_account_balance` (`org_gl_id`),
+  ADD CONSTRAINT `fk_trans_transdetail` FOREIGN KEY (`transaction_id`) REFERENCES `accounting_transaction` (`transaction_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
