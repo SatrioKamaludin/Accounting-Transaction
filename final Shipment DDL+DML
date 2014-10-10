@@ -1,0 +1,808 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.6
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Oct 10, 2014 at 05:19 AM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `shipment`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_mechanism`
+--
+
+CREATE TABLE IF NOT EXISTS `contact_mechanism` (
+  `contact_mechanism_id` int(11) NOT NULL,
+  PRIMARY KEY (`contact_mechanism_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='contact parent';
+
+--
+-- Dumping data for table `contact_mechanism`
+--
+
+INSERT INTO `contact_mechanism` (`contact_mechanism_id`) VALUES
+(1),
+(2),
+(3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `country`
+--
+
+CREATE TABLE IF NOT EXISTS `country` (
+  `country_id` int(2) NOT NULL,
+  `country_name` varchar(20) NOT NULL,
+  PRIMARY KEY (`country_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `country`
+--
+
+INSERT INTO `country` (`country_id`, `country_name`) VALUES
+(1, 'Indonesia'),
+(2, 'Brunei'),
+(3, 'Laos'),
+(4, 'Cambodia'),
+(5, 'Malaysia'),
+(6, 'Burma'),
+(7, 'Philippines'),
+(8, 'Singapore'),
+(9, 'Thailand'),
+(10, 'Vietnam');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_return`
+--
+
+CREATE TABLE IF NOT EXISTS `customer_return` (
+  `shipment_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT 'Customer Return',
+  PRIMARY KEY (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_shipment`
+--
+
+CREATE TABLE IF NOT EXISTS `customer_shipment` (
+  `shipment_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT 'Customer Shipment',
+  PRIMARY KEY (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customer_shipment`
+--
+
+INSERT INTO `customer_shipment` (`shipment_id`, `shipment_type`) VALUES
+(9000, 'Customer Shipment');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `document`
+--
+
+CREATE TABLE IF NOT EXISTS `document` (
+  `document_id` int(11) NOT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  `document_type_Id` int(11) DEFAULT NULL,
+  `shipment_id` int(11) DEFAULT NULL,
+  `shipment_item_Id` int(11) DEFAULT NULL,
+  `shipment_package_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`document_id`),
+  KEY `fk_doc_ship_idx` (`shipment_id`),
+  KEY `fk_doc_ite_idx` (`shipment_item_Id`),
+  KEY `fk_doc_pac_idx` (`shipment_package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `document_type`
+--
+
+CREATE TABLE IF NOT EXISTS `document_type` (
+  `document_type_id` int(11) NOT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`document_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `drop_shipment`
+--
+
+CREATE TABLE IF NOT EXISTS `drop_shipment` (
+  `shipment_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT 'Drop Shipment',
+  PRIMARY KEY (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `electronic_address`
+--
+
+CREATE TABLE IF NOT EXISTS `electronic_address` (
+  `contact_mechanism_id` int(11) NOT NULL,
+  `electronic_address_string` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`contact_mechanism_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `electronic_address`
+--
+
+INSERT INTO `electronic_address` (`contact_mechanism_id`, `electronic_address_string`) VALUES
+(1, 'missme@yahoo.com'),
+(2, 'morning@gmail.com'),
+(3, 'president@hotmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `facility`
+--
+
+CREATE TABLE IF NOT EXISTS `facility` (
+  `facility_id` int(11) NOT NULL,
+  `facility_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`facility_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `facility`
+--
+
+INSERT INTO `facility` (`facility_id`, `facility_name`) VALUES
+(1, 'Container'),
+(2, 'Cargo');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fixed_asset`
+--
+
+CREATE TABLE IF NOT EXISTS `fixed_asset` (
+  `fixed_asset_id` int(11) NOT NULL,
+  `fixed_asset_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`fixed_asset_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `fixed_asset`
+--
+
+INSERT INTO `fixed_asset` (`fixed_asset_id`, `fixed_asset_name`) VALUES
+(1, 'Truck #1'),
+(2, 'Truck#2'),
+(3, 'Hercules#1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gender_type`
+--
+
+CREATE TABLE IF NOT EXISTS `gender_type` (
+  `gender_type_id` int(1) NOT NULL,
+  `description` varchar(10) NOT NULL,
+  PRIMARY KEY (`gender_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gender_type`
+--
+
+INSERT INTO `gender_type` (`gender_type_id`, `description`) VALUES
+(1, 'Male'),
+(2, 'Female'),
+(3, 'Male to Fe'),
+(4, 'Female to '),
+(5, 'Not Provid');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incoming_shipment`
+--
+
+CREATE TABLE IF NOT EXISTS `incoming_shipment` (
+  `shipment_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT 'Incoming Shipment',
+  PRIMARY KEY (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `informal_organization`
+--
+
+CREATE TABLE IF NOT EXISTS `informal_organization` (
+  `organization_id` int(11) NOT NULL,
+  PRIMARY KEY (`organization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `informal_organization`
+--
+
+INSERT INTO `informal_organization` (`organization_id`) VALUES
+(2),
+(3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `legal_organization`
+--
+
+CREATE TABLE IF NOT EXISTS `legal_organization` (
+  `organization_id` int(11) NOT NULL,
+  `federal_tax_id_num` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`organization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='organization subtype';
+
+--
+-- Dumping data for table `legal_organization`
+--
+
+INSERT INTO `legal_organization` (`organization_id`, `federal_tax_id_num`) VALUES
+(1, '1103120130');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `marital_status_type`
+--
+
+CREATE TABLE IF NOT EXISTS `marital_status_type` (
+  `marital_status_type_id` int(1) NOT NULL,
+  `description` varchar(10) NOT NULL,
+  PRIMARY KEY (`marital_status_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `marital_status_type`
+--
+
+INSERT INTO `marital_status_type` (`marital_status_type_id`, `description`) VALUES
+(1, 'Lajang'),
+(2, 'Menikah'),
+(3, 'Duda'),
+(4, 'Janda');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `organization`
+--
+
+CREATE TABLE IF NOT EXISTS `organization` (
+  `party_id` int(11) NOT NULL,
+  `organization_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`party_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `organization`
+--
+
+INSERT INTO `organization` (`party_id`, `organization_name`) VALUES
+(1, 'Bentang Pustaka'),
+(2, 'Rahwana'),
+(3, 'Stella');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `outgoing_shipment`
+--
+
+CREATE TABLE IF NOT EXISTS `outgoing_shipment` (
+  `shipment_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT 'Outgoing Shipment',
+  PRIMARY KEY (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `outgoing_shipment`
+--
+
+INSERT INTO `outgoing_shipment` (`shipment_id`, `shipment_type`) VALUES
+(9000, 'Outgoing Shipment');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packaging_content`
+--
+
+CREATE TABLE IF NOT EXISTS `packaging_content` (
+  `packaging_content_id` int(11) NOT NULL,
+  `shipment_item_id` int(11) DEFAULT NULL,
+  `shipment_package_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  PRIMARY KEY (`packaging_content_id`),
+  KEY `fk_pa_pash_idx` (`shipment_package_id`),
+  KEY `fk_pa_ite_idx` (`shipment_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `packaging_content`
+--
+
+INSERT INTO `packaging_content` (`packaging_content_id`, `shipment_item_id`, `shipment_package_id`, `quantity`) VALUES
+(1, 1, 1, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `party`
+--
+
+CREATE TABLE IF NOT EXISTS `party` (
+  `party_id` int(11) NOT NULL,
+  PRIMARY KEY (`party_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `party`
+--
+
+INSERT INTO `party` (`party_id`) VALUES
+(1),
+(2),
+(3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `person`
+--
+
+CREATE TABLE IF NOT EXISTS `person` (
+  `party_id` int(11) NOT NULL,
+  `id_number` varchar(16) NOT NULL,
+  `full_name` varchar(40) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `birth_date` date NOT NULL,
+  `mother_maiden_name` varchar(30) NOT NULL,
+  `comment` varchar(50) DEFAULT NULL,
+  `gender_type_id` int(1) NOT NULL,
+  `marital_status_type_id` int(1) NOT NULL,
+  `country_id` int(2) NOT NULL,
+  PRIMARY KEY (`party_id`),
+  KEY `gender_type_id` (`gender_type_id`,`marital_status_type_id`),
+  KEY `country_id` (`country_id`),
+  KEY `country_id_2` (`country_id`),
+  KEY `marital_status_type_id` (`marital_status_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `person`
+--
+
+INSERT INTO `person` (`party_id`, `id_number`, `full_name`, `address`, `birth_date`, `mother_maiden_name`, `comment`, `gender_type_id`, `marital_status_type_id`, `country_id`) VALUES
+(1, '33110323241212', 'Agatha Christie', 'Jl. Anggrek 26, Medan', '2014-10-08', 'Christie Hakim', '', 2, 1, 1),
+(2, '3242311210224', 'Dewi Lestari', 'Baker Street', '1988-09-09', 'Diana', NULL, 2, 3, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `postal_address`
+--
+
+CREATE TABLE IF NOT EXISTS `postal_address` (
+  `contact_mechanism_id` int(11) NOT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`contact_mechanism_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `postal_address`
+--
+
+INSERT INTO `postal_address` (`contact_mechanism_id`, `address`) VALUES
+(1, '20715'),
+(2, '27255'),
+(3, '45328');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase_return`
+--
+
+CREATE TABLE IF NOT EXISTS `purchase_return` (
+  `shipment_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT 'Purchase Return',
+  PRIMARY KEY (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase_shipment`
+--
+
+CREATE TABLE IF NOT EXISTS `purchase_shipment` (
+  `shipment_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT 'Purchase_Item',
+  PRIMARY KEY (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipment`
+--
+
+CREATE TABLE IF NOT EXISTS `shipment` (
+  `shipment_id` int(11) NOT NULL,
+  `estimated_ship_date` varchar(45) DEFAULT NULL,
+  `estimated_ready_date` varchar(45) DEFAULT NULL,
+  `estimated_arrival_date` varchar(45) DEFAULT NULL,
+  `ship_cost` varchar(45) DEFAULT NULL,
+  `latest_cancel_date` varchar(45) DEFAULT NULL,
+  `handling_instruction` varchar(45) DEFAULT NULL,
+  `last_updated` varchar(45) DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
+  `contact_mechanism_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`shipment_id`),
+  KEY `fk_ship_party` (`party_id`),
+  KEY `fk_ship_con_idx` (`contact_mechanism_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='parent shipment ';
+
+--
+-- Dumping data for table `shipment`
+--
+
+INSERT INTO `shipment` (`shipment_id`, `estimated_ship_date`, `estimated_ready_date`, `estimated_arrival_date`, `ship_cost`, `latest_cancel_date`, `handling_instruction`, `last_updated`, `party_id`, `contact_mechanism_id`) VALUES
+(9000, '2001-04-06', '2001-04-06', '2001-04-08', '2000', NULL, 'Handle with Care', NULL, 1, 1),
+(9200, '2001-06-10', '2001-06-11', '2001-06-12', '4500', NULL, 'Fragile', NULL, 2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipment_item`
+--
+
+CREATE TABLE IF NOT EXISTS `shipment_item` (
+  `shipment_item_id` int(11) NOT NULL,
+  `quantity` varchar(45) DEFAULT NULL,
+  `shipments_contents_description` varchar(45) DEFAULT NULL,
+  `shipment_id` int(11) DEFAULT NULL,
+  `product_name` varchar(45) DEFAULT NULL,
+  `comment` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`shipment_item_id`),
+  KEY `fk_item_ship_idx` (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shipment_item`
+--
+
+INSERT INTO `shipment_item` (`shipment_item_id`, `quantity`, `shipments_contents_description`, `shipment_id`, `product_name`, `comment`) VALUES
+(1, '100', 'Material Bangunan', 9000, 'Candi', 'top priority');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipment_method_type`
+--
+
+CREATE TABLE IF NOT EXISTS `shipment_method_type` (
+  `shipment_method_type_id` int(11) NOT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`shipment_method_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shipment_method_type`
+--
+
+INSERT INTO `shipment_method_type` (`shipment_method_type_id`, `description`) VALUES
+(1, 'Truck'),
+(2, 'Ground'),
+(3, 'Air');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipment_package`
+--
+
+CREATE TABLE IF NOT EXISTS `shipment_package` (
+  `shipment_package_id` int(11) NOT NULL,
+  `date_created` date DEFAULT NULL,
+  PRIMARY KEY (`shipment_package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shipment_package`
+--
+
+INSERT INTO `shipment_package` (`shipment_package_id`, `date_created`) VALUES
+(1, '2014-06-09'),
+(2, '2014-07-05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipment_route_segment`
+--
+
+CREATE TABLE IF NOT EXISTS `shipment_route_segment` (
+  `shipment_route_segment_id` int(11) NOT NULL,
+  `actual_start_datetime` datetime DEFAULT NULL,
+  `actual_arrival_datetime` datetime DEFAULT NULL,
+  `fuel_used` varchar(45) DEFAULT NULL,
+  `shipment_id` int(11) DEFAULT NULL,
+  `shipment_method_type` int(11) DEFAULT NULL,
+  `facility_id` int(11) DEFAULT NULL,
+  `fixed_asset_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`shipment_route_segment_id`),
+  KEY `fk_route_type_idx` (`shipment_method_type`),
+  KEY `ffk_route_ship_idx` (`shipment_id`),
+  KEY `fk_fac_route_idx` (`facility_id`),
+  KEY `fk_fix_route_idx` (`fixed_asset_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shipment_route_segment`
+--
+
+INSERT INTO `shipment_route_segment` (`shipment_route_segment_id`, `actual_start_datetime`, `actual_arrival_datetime`, `fuel_used`, `shipment_id`, `shipment_method_type`, `facility_id`, `fixed_asset_id`) VALUES
+(1, '2014-06-06 00:00:00', '2014-06-10 00:00:00', '4 gallons', 9000, 2, 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipment_status`
+--
+
+CREATE TABLE IF NOT EXISTS `shipment_status` (
+  `shipment_status_id` int(11) NOT NULL,
+  `shipment_id` int(11) DEFAULT NULL,
+  `shipment_status_date` date DEFAULT NULL,
+  `shipment_status_type_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`shipment_status_id`),
+  KEY `fk_ship_stat_idx` (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shipment_status`
+--
+
+INSERT INTO `shipment_status` (`shipment_status_id`, `shipment_id`, `shipment_status_date`, `shipment_status_type_id`) VALUES
+(1, 9000, '2014-05-06', 1),
+(2, 9000, '2014-05-07', 2),
+(3, 9000, '2014-05-08', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipment_status_type`
+--
+
+CREATE TABLE IF NOT EXISTS `shipment_status_type` (
+  `shipment_status_type_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`shipment_status_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shipment_status_type`
+--
+
+INSERT INTO `shipment_status_type` (`shipment_status_type_id`, `shipment_type`) VALUES
+(1, 'Scheduled'),
+(2, 'Shipped'),
+(3, 'Received');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `telecommunications_number`
+--
+
+CREATE TABLE IF NOT EXISTS `telecommunications_number` (
+  `contact_mechanism_id` int(11) NOT NULL,
+  `contact_number` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`contact_mechanism_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `telecommunications_number`
+--
+
+INSERT INTO `telecommunications_number` (`contact_mechanism_id`, `contact_number`) VALUES
+(1, '0271-2074882'),
+(2, '021-6312123'),
+(3, '08627120412');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transfer`
+--
+
+CREATE TABLE IF NOT EXISTS `transfer` (
+  `shipment_id` int(11) NOT NULL,
+  `shipment_type` varchar(45) DEFAULT 'Transfer',
+  PRIMARY KEY (`shipment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `customer_return`
+--
+ALTER TABLE `customer_return`
+  ADD CONSTRAINT `fk_cust_in` FOREIGN KEY (`shipment_id`) REFERENCES `incoming_shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `customer_shipment`
+--
+ALTER TABLE `customer_shipment`
+  ADD CONSTRAINT `fk_cust_out` FOREIGN KEY (`shipment_id`) REFERENCES `outgoing_shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `document`
+--
+ALTER TABLE `document`
+  ADD CONSTRAINT `fk_doc_pac` FOREIGN KEY (`shipment_package_id`) REFERENCES `shipment_package` (`shipment_package_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_doc_ite` FOREIGN KEY (`shipment_item_Id`) REFERENCES `shipment_item` (`shipment_item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_doc_ship` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`shipment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_doc_type` FOREIGN KEY (`document_id`) REFERENCES `document_type` (`document_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `drop_shipment`
+--
+ALTER TABLE `drop_shipment`
+  ADD CONSTRAINT `fk_dr_sh` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `electronic_address`
+--
+ALTER TABLE `electronic_address`
+  ADD CONSTRAINT `fk_contact_email` FOREIGN KEY (`contact_mechanism_id`) REFERENCES `contact_mechanism` (`contact_mechanism_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `incoming_shipment`
+--
+ALTER TABLE `incoming_shipment`
+  ADD CONSTRAINT `fk_inc_sh` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `informal_organization`
+--
+ALTER TABLE `informal_organization`
+  ADD CONSTRAINT `fk_org_inf` FOREIGN KEY (`organization_id`) REFERENCES `organization` (`party_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `legal_organization`
+--
+ALTER TABLE `legal_organization`
+  ADD CONSTRAINT `fk_org` FOREIGN KEY (`organization_id`) REFERENCES `organization` (`party_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `organization`
+--
+ALTER TABLE `organization`
+  ADD CONSTRAINT `fk_party_org` FOREIGN KEY (`party_id`) REFERENCES `party` (`party_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `outgoing_shipment`
+--
+ALTER TABLE `outgoing_shipment`
+  ADD CONSTRAINT `fk_out_sh` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `packaging_content`
+--
+ALTER TABLE `packaging_content`
+  ADD CONSTRAINT `fk_pa_pash` FOREIGN KEY (`shipment_package_id`) REFERENCES `shipment_package` (`shipment_package_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_pa_ite` FOREIGN KEY (`shipment_item_id`) REFERENCES `shipment_item` (`shipment_item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `person`
+--
+ALTER TABLE `person`
+  ADD CONSTRAINT `fk_party` FOREIGN KEY (`party_id`) REFERENCES `party` (`party_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_person_country` FOREIGN KEY (`country_id`) REFERENCES `country` (`country_id`),
+  ADD CONSTRAINT `fk_person_gender` FOREIGN KEY (`gender_type_id`) REFERENCES `gender_type` (`gender_type_ID`),
+  ADD CONSTRAINT `fk_person_marital` FOREIGN KEY (`marital_status_type_id`) REFERENCES `marital_status_type` (`marital_status_type_id`);
+
+--
+-- Constraints for table `postal_address`
+--
+ALTER TABLE `postal_address`
+  ADD CONSTRAINT `fk_contact_postal` FOREIGN KEY (`contact_mechanism_id`) REFERENCES `contact_mechanism` (`contact_mechanism_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `purchase_return`
+--
+ALTER TABLE `purchase_return`
+  ADD CONSTRAINT `fk_pur_ou` FOREIGN KEY (`shipment_id`) REFERENCES `outgoing_shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `purchase_shipment`
+--
+ALTER TABLE `purchase_shipment`
+  ADD CONSTRAINT `fk_pur_inc` FOREIGN KEY (`shipment_id`) REFERENCES `incoming_shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipment`
+--
+ALTER TABLE `shipment`
+  ADD CONSTRAINT `fk_ship_con` FOREIGN KEY (`contact_mechanism_id`) REFERENCES `contact_mechanism` (`contact_mechanism_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ship_party` FOREIGN KEY (`party_id`) REFERENCES `party` (`party_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipment_item`
+--
+ALTER TABLE `shipment_item`
+  ADD CONSTRAINT `fk_item_ship` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`shipment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `shipment_route_segment`
+--
+ALTER TABLE `shipment_route_segment`
+  ADD CONSTRAINT `ffk_route_ship` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`shipment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_fac_route` FOREIGN KEY (`facility_id`) REFERENCES `facility` (`facility_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_fix_route` FOREIGN KEY (`fixed_asset_id`) REFERENCES `fixed_asset` (`fixed_asset_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_route_type` FOREIGN KEY (`shipment_method_type`) REFERENCES `shipment_method_type` (`shipment_method_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `shipment_status`
+--
+ALTER TABLE `shipment_status`
+  ADD CONSTRAINT `fk_ship_stat` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_type_stat` FOREIGN KEY (`shipment_status_id`) REFERENCES `shipment_status_type` (`shipment_status_type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `telecommunications_number`
+--
+ALTER TABLE `telecommunications_number`
+  ADD CONSTRAINT `fk_contact_tele` FOREIGN KEY (`contact_mechanism_id`) REFERENCES `contact_mechanism` (`contact_mechanism_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `transfer`
+--
+ALTER TABLE `transfer`
+  ADD CONSTRAINT `fk_tr_sh` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`shipment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
