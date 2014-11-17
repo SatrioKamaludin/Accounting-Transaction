@@ -1,10 +1,11 @@
 Shipment
 ======================
-
 Tugas SISFO IF-36-GAB
-1. Satrio Kamaludin
-2. Aji Tri Santoso
-3. Cahya
-4. Falah Aghaditama Nazar
+
+## Developed by
+-[Satrio Kamaludin](https://github.com/SatrioKamaludin)
+-[Aji Tri Santoso](https://github.com/ajisantoso)
+-[Cahya Sukma Riyandi](https://github.com/riyanayir)
+-[Falah Aghaditama Nazar](https://github.com/falahnazar)
 
 Baca wiki untuk shipping document
